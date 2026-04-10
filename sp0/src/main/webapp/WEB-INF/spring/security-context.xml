@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        https://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- 임시: Plain text 비밀번호 (테스트용) -->
+    <!-- 실제 운영시 BCryptPasswordEncoder로 교체 필요 -->
+    <bean id="bcryptPasswordEncoder" 
+          class="org.springframework.security.crypto.password.NoOpPasswordEncoder"
+          factory-method="getInstance"/>
+    
+    <!-- Custom UserDetailsService -->
+    <bean id="customUserDetailsService" 
+          class="org.zerock.security.CustomUserDetailsService"/>
+    
+    <!-- 로그인 성공 핸들러 -->
+    <bean id="customLoginSuccessHandler" 
+          class="org.zerock.security.CustomLoginSuccessHandler"/>
+    
+    <!-- 접근 거부 핸들러 -->
+    <bean id="customAccessDeniedHandler" 
+          class="org.zerock.security.CustomAccessDeniedHandler"/>
+
+    <!-- JSP Security 태그용 Expression Handler -->
+    <bean id="webSecurityExpressionHandler" 
+          class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+
+    <!-- Spring Security 설정 -->
+    <security:http auto-config="true" use-expressions="true" request-matcher="ant">
+        
+        <!-- 정적 리소스 허용 -->
+        <security:intercept-url pattern="/resources/**" access="permitAll"/>
+        <security:intercept-url pattern="/css/**" access="permitAll"/>
+        <security:intercept-url pattern="/js/**" access="permitAll"/>
+        <security:intercept-url pattern="/images/**" access="permitAll"/>
+        
+        <!-- 로그인/접근거부 페이지 허용 -->
+        <security:intercept-url pattern="/account/login" access="permitAll"/>
+        <security:intercept-url pattern="/accessDenied" access="permitAll"/>
+        
+        <!-- 모든 페이지는 관리자만 접근 가능 -->
+        <security:intercept-url pattern="/product/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/reply/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>
+        
+        <!-- 로그인 폼 설정 -->
+        <security:form-login 
+            login-page="/account/login"
+            login-processing-url="/account/login"
+            default-target-url="/product/list"
+            authentication-success-handler-ref="customLoginSuccessHandler"
+            username-parameter="username"
+            password-parameter="password"/>
+        
+        <!-- 로그아웃 설정 -->
+        <security:logout 
+            logout-url="/account/logout"
+            logout-success-url="/account/login?logout"
+            invalidate-session="true"/>
+        
+        <!-- 접근 거부 핸들러 -->
+        <security:access-denied-handler ref="customAccessDeniedHandler"/>
+        
+        <!-- CSRF 설정 (필요시 비활성화) -->
+        <security:csrf disabled="true"/>
+        
+        <!-- Remember Me 설정 -->
+        <security:remember-me 
+            data-source-ref="dataSource"
+            token-validity-seconds="604800"/>
+        
+    </security:http>
+
+    <!-- 인증 매니저 설정 -->
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="customUserDetailsService">
+            <security:password-encoder ref="bcryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>

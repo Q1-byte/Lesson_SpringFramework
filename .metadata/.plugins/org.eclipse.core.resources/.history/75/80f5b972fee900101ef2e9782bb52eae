@@ -1,0 +1,93 @@
+/* 헤더, 푸터 다크 그레이 스타일 */
+.header {
+  background: #2c2c2c;
+  color: #fff;
+}
+@charset "UTF-8";
+
+/* 헤더, 푸터 다크 그레이 스타일 */
+.header {
+  background: #2c2c2c;
+  color: #fff;
+}
+
+.footer {
+  background: #2c2c2c;
+  color: #fff;
+}
+
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #222;
+  color: #fff;
+}
+
+
+.navbar-custom {
+  height: 70px;
+  background-color: #2c2c2c;
+}
+
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: #fff;
+}
+
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+}
+
+
+.sidebar {
+  width: 220px;
+  background-color: #222;
+  height: calc(100vh - 70px);
+}
+
+
+.sidebar .list-group-item {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+}
+
+
+.sidebar .list-group-item:hover,
+.sidebar .list-group-item.active {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: #222;
+  color: #fff;
+}
+
+/* 카드, 버튼, 박스 등 포인트 요소 */
+.card, .btn, .content-box {
+  background: #fff;
+  color: #222;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+a {
+  color: #fff;
+}
+
+a.btn, button {
+  background: #fff;
+  color: #222;
+  border: 1px solid #222;
+}

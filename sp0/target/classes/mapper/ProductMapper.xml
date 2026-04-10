@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.mapper.ProductMapper">
+
+    <!-- 1. 신규 상품 등록 -->
+    <insert id="insert" parameterType="org.zerock.dto.ProductDTO" useGeneratedKeys="true" keyProperty="num">
+        INSERT INTO product
+        (name, category, price, description, pictureurl, regid, regdate)
+        VALUES
+        (#{name}, #{category}, #{price}, #{description}, #{pictureurl}, #{regid}, #{regdate})
+    </insert>
+
+    <!-- 2. 단일 상품 조회 -->
+    <select id="selectOne" parameterType="int" resultType="org.zerock.dto.ProductDTO">
+        SELECT num, name, category, price, description, pictureurl, regid, regdate
+        FROM product
+        WHERE num = #{num}
+    </select>
+
+    <!-- 3. 상품 삭제 -->
+    <delete id="remove" parameterType="int">
+        DELETE FROM product
+        WHERE num = #{num}
+    </delete>
+
+    <!-- 4. 상품 수정 -->
+    <update id="update" parameterType="org.zerock.dto.ProductDTO">
+        UPDATE product
+        SET 
+            name = #{name},
+            category = #{category},
+            price = #{price},
+            description = #{description},
+            pictureurl = #{pictureurl},
+            regid = #{regid},
+            regdate = #{regdate}
+        WHERE num = #{num}
+    </update>
+
+    <!-- 5. 전체 상품 조회 -->
+    <select id="list" resultType="org.zerock.dto.ProductDTO">
+        SELECT num, name, category, price, description, pictureurl, regid, regdate
+        FROM product
+        ORDER BY num DESC
+    </select>
+
+    <!-- 6. 페이징 조회 -->
+    <select id="list2" resultType="org.zerock.dto.ProductDTO">
+        SELECT num, name, category, price, description, pictureurl, regid, regdate
+        FROM product
+        <where>
+            <if test="keyword != null and keyword != '' and type != null and type != ''">
+                <choose>
+                    <when test="type == 'num'">
+                        AND num = #{keyword}
+                    </when>
+                    <when test="type == 'name'">
+                        AND name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'category'">
+                        AND category LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'price'">
+                        AND price = #{keyword}
+                    </when>
+                    <when test="type == 'regid'">
+                        AND regid LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'all'">
+                        AND (
+                        num = #{keyword}
+                        OR name LIKE CONCAT('%', #{keyword}, '%')
+                        OR category LIKE CONCAT('%', #{keyword}, '%')
+                        OR regid LIKE CONCAT('%', #{keyword}, '%')
+                        OR price = #{keyword}
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
+                <choose>
+                    <when test="order != null and dir != null">
+                        ORDER BY ${order} ${dir}
+                    </when>
+                    <otherwise>
+                        ORDER BY num DESC
+                    </otherwise>
+                </choose>
+        LIMIT #{skip}, #{count}
+    </select>
+
+    <!-- 7. 전체 상품 개수 -->
+    <select id="listCount" resultType="int">
+        SELECT COUNT(*) FROM product
+        <where>
+            <if test="keyword != null and keyword != '' and type != null and type != ''">
+                <choose>
+                    <when test="type == 'num'">
+                        AND num = #{keyword}
+                    </when>
+                    <when test="type == 'name'">
+                        AND name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'category'">
+                        AND category LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'price'">
+                        AND price = #{keyword}
+                    </when>
+                    <when test="type == 'regid'">
+                        AND regid LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'all'">
+                        AND (
+                        num = #{keyword}
+                        OR name LIKE CONCAT('%', #{keyword}, '%')
+                        OR category LIKE CONCAT('%', #{keyword}, '%')
+                        OR regid LIKE CONCAT('%', #{keyword}, '%')
+                        OR price = #{keyword}
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+</mapper>

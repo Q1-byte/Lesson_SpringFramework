@@ -1,0 +1,466 @@
+@charset "UTF-8";
+
+/* ===== CSS 변수 기반 라이트/다크 모드 ===== */
+
+/* 라이트 모드 (기본) */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-sidebar: #0b5ed7;
+  --bg-navbar: #0d6efd;
+  --bg-input: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-navbar: #ffffff;
+  --text-sidebar: #ffffff;
+  --border-color: #dee2e6;
+  --link-color: #0d6efd;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* 다크 모드 */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2c2c2c;
+  --bg-card: #2c2c2c;
+  --bg-sidebar: #1a1a1a;
+  --bg-navbar: #2c2c2c;
+  --bg-input: #333333;
+  --text-primary: #ffffff;
+  --text-secondary: #adb5bd;
+  --text-navbar: #ffffff;
+  --text-sidebar: #ffffff;
+  --border-color: #444444;
+  --link-color: #8ab4f8;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* 기본 바디 스타일 */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* 헤더 스타일 */
+.header {
+  background: var(--bg-navbar) !important;
+  color: var(--text-navbar) !important;
+}
+
+.navbar-custom {
+  height: 70px;
+  background-color: var(--bg-navbar) !important;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: var(--text-navbar) !important;
+}
+
+/* 푸터 스타일 */
+.footer {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.footer .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* 메인 레이아웃 */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  width: 220px;
+  background-color: var(--bg-sidebar) !important;
+  height: calc(100vh - 70px);
+  border-right: 1px solid var(--border-color);
+  transition: background 0.3s ease;
+}
+
+.sidebar .list-group-item {
+  background-color: transparent !important;
+  color: var(--text-sidebar) !important;
+  border: none;
+}
+
+.sidebar .list-group-item:hover,
+.sidebar .list-group-item.active {
+  background-color: rgba(255,255,255,0.1) !important;
+  color: var(--text-sidebar) !important;
+}
+
+/* 콘텐츠 영역 */
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== 카드 스타일 ===== */
+.card {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.card-header {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.card-body {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== 테이블 스타일 ===== */
+.table {
+  color: var(--text-primary) !important;
+  background: var(--bg-card) !important;
+}
+
+.table thead th {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.table tbody td {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.table tbody tr:hover {
+  background: var(--bg-secondary) !important;
+}
+
+/* ===== 폼 요소 스타일 ===== */
+.form-control,
+.form-select {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--link-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* ===== 버튼 스타일 ===== */
+.btn-primary {
+  background: #0d6efd !important;
+  color: #fff !important;
+  border: 1px solid #0d6efd !important;
+}
+
+.btn-primary:hover {
+  background: #0b5ed7 !important;
+  color: #fff !important;
+}
+
+.btn-success {
+  background: #198754 !important;
+  color: #fff !important;
+  border: 1px solid #198754 !important;
+}
+
+.btn-secondary {
+  background: #6c757d !important;
+  color: #fff !important;
+  border: 1px solid #6c757d !important;
+}
+
+.btn-danger {
+  background: #dc3545 !important;
+  color: #fff !important;
+}
+
+/* 버튼 텍스트 항상 흰색 */
+.btn:not(.btn-outline-primary):not(.btn-outline-secondary):not(.btn-outline-success):not(.btn-outline-danger):not(.btn-outline-warning):not(.btn-outline-info):not(.btn-outline-light):not(.btn-outline-dark) {
+  color: #fff !important;
+}
+
+a.btn:not([class*="btn-outline"]),
+a.btn-primary,
+a.btn-success,
+a.btn-secondary,
+a.btn-danger {
+  color: #fff !important;
+}
+
+/* outline 버튼 스타일 */
+.btn-outline-primary {
+  color: #0d6efd !important;
+  background: transparent !important;
+  border: 1px solid #0d6efd !important;
+}
+
+.btn-outline-primary:hover {
+  color: #fff !important;
+  background: #0d6efd !important;
+}
+
+.btn-outline-secondary {
+  color: #6c757d !important;
+  background: transparent !important;
+  border: 1px solid #6c757d !important;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff !important;
+  background: #6c757d !important;
+}
+
+/* 다크모드에서 outline 버튼 */
+[data-theme="dark"] .btn-outline-primary {
+  color: #8ab4f8 !important;
+  border-color: #8ab4f8 !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  color: #fff !important;
+  background: #0d6efd !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  color: #adb5bd !important;
+  border-color: #adb5bd !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  color: #fff !important;
+  background: #6c757d !important;
+}
+
+/* ===== 링크 스타일 ===== */
+a {
+  color: var(--link-color) !important;
+}
+
+a:hover {
+  color: var(--link-color) !important;
+  opacity: 0.8;
+}
+
+.navbar-custom a {
+  color: var(--text-navbar) !important;
+}
+
+.card-header a,
+.table a {
+  color: var(--link-color) !important;
+}
+
+/* 제목 텍스트 */
+.text-primary {
+  color: var(--link-color) !important;
+}
+
+/* ===== 페이지네이션 스타일 ===== */
+.pagination .page-link {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.pagination .page-link:hover {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.pagination .page-item.active .page-link {
+  background: #0d6efd !important;
+  color: #fff !important;
+  border-color: #0d6efd !important;
+}
+
+/* ===== 모달 스타일 ===== */
+.modal-content {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) !important;
+}
+
+/* ===== 다크 모드 추가 스타일 ===== */
+
+/* 모든 텍스트 요소 */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] label,
+[data-theme="dark"] strong,
+[data-theme="dark"] small {
+  color: #fff !important;
+}
+
+/* Bootstrap text 클래스 오버라이드 */
+[data-theme="dark"] .text-dark {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .text-body {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .text-black {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: #adb5bd !important;
+}
+
+/* 카드 내부 요소 */
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .card-text {
+  color: #fff !important;
+}
+
+/* 테이블 내부 요소 */
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td {
+  color: #fff !important;
+}
+
+/* select option */
+[data-theme="dark"] option {
+  background: #333 !important;
+  color: #fff !important;
+}
+
+/* input, textarea */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: #333 !important;
+  color: #fff !important;
+  border-color: #555 !important;
+}
+
+/* input-group-text (라벨) 다크모드 */
+[data-theme="dark"] .input-group-text {
+  background: #444 !important;
+  color: #fff !important;
+  border-color: #555 !important;
+}
+
+/* font-weight-bold 등 */
+[data-theme="dark"] .font-weight-bold,
+[data-theme="dark"] .fw-bold {
+  color: #fff !important;
+}
+
+/* 모달 내부 */
+[data-theme="dark"] .modal-title,
+[data-theme="dark"] .modal-body {
+  color: #fff !important;
+}
+
+/* 기타 Bootstrap 컴포넌트 */
+[data-theme="dark"] .list-group-item {
+  background: var(--bg-card) !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: #2c2c2c !important;
+  border-color: #444 !important;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: #3a3a3a !important;
+}
+
+/* bg-light, bg-white 오버라이드 */
+[data-theme="dark"] .bg-light {
+  background: #333 !important;
+  color: #fff !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background: #2c2c2c !important;
+  color: #fff !important;
+}
+
+/* 인라인 스타일 오버라이드 */
+[data-theme="dark"] [style*="background:#fff"],
+[data-theme="dark"] [style*="background: #fff"],
+[data-theme="dark"] [style*="background-color:#fff"],
+[data-theme="dark"] [style*="background-color: #fff"] {
+  background: #2c2c2c !important;
+  color: #fff !important;
+}
+
+[data-theme="dark"] [style*="color:#222"],
+[data-theme="dark"] [style*="color: #222"] {
+  color: #fff !important;
+}
+
+/* 상품 상세 페이지 스타일 */
+[data-theme="dark"] .border-bottom {
+  border-color: #444 !important;
+}
+
+[data-theme="dark"] .border {
+  border-color: #444 !important;
+}
+
+[data-theme="dark"] .rounded {
+  background: #333 !important;
+}
+
+/* 부드러운 전환 효과 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

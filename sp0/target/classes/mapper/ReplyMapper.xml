@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+
+    <!-- 댓글 목록 -->
+    <select id="getListByNum" resultType="org.zerock.dto.ReplyDTO">
+        SELECT rno, replyText, replyer, replydate, updatedate, delflag, num
+        FROM treply
+        WHERE num = #{num} AND delflag = false
+        ORDER BY rno ASC
+    </select>
+
+    <!-- 댓글 등록 -->
+    <insert id="insert" parameterType="org.zerock.dto.ReplyDTO" useGeneratedKeys="true" keyProperty="rno">
+        INSERT INTO treply (replyText, replyer, num)
+        VALUES (#{replyText}, #{replyer}, #{num})
+    </insert>
+
+    <!-- 댓글 삭제 (delflag만 true로) -->
+    <update id="delete">
+        UPDATE treply SET delflag = true WHERE rno = #{rno}
+    </update>
+
+    <!-- 댓글 수정 -->
+    <update id="update" parameterType="org.zerock.dto.ReplyDTO">
+        UPDATE treply
+        SET replyText = #{replyText}, updatedate = NOW()
+        WHERE rno = #{rno}
+    </update>
+
+</mapper>

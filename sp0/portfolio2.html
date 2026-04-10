@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Commerce Admin - Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #3b82f6;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --code-bg: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            line-height: 1.6;
+        }
+
+        /* A4 가로 페이지 */
+        .page {
+            width: 297mm;
+            height: 210mm;
+            background: white;
+            margin-bottom: 30px;
+            padding: 28px 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+
+        /* 타이포그래피 */
+        .page-header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+        }
+
+        .page-header p {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 14px 0 8px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 10px 0 5px;
+        }
+
+        p,
+        li {
+            font-size: 11.5px;
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        ul {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        strong {
+            color: var(--primary-dark);
+        }
+
+        /* 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            height: calc(100% - 55px);
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 컴포넌트 */
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .card-accent {
+            border-left: 4px solid var(--accent);
+            background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+        }
+
+        .card h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 11px;
+            margin: 0;
+            color: var(--text-light);
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 9.5px;
+            line-height: 1.45;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 9px;
+            font-weight: 700;
+            color: white;
+            border-radius: 3px;
+            margin-right: 5px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 18px;
+            right: 36px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        /* 커버 페이지 */
+        .cover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cover-content {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 50px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .cover h1 {
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .cover h2 {
+            font-size: 16px;
+            font-weight: 400;
+            color: #bfdbfe;
+            border: none;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+
+        .info-table {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            width: 90px;
+            font-weight: 700;
+            color: #93c5fd;
+        }
+
+        .info-value {
+            color: white;
+        }
+
+        .cover-visual {
+            background: white;
+            border-radius: 14px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        .cover-visual .icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .cover-visual h3 {
+            color: var(--primary-dark);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .cover-visual p {
+            color: var(--text-light);
+            font-size: 11px;
+        }
+
+        /* 다이어그램 */
+        .diagram-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .diagram-box .mermaid {
+            transform: scale(0.70);
+            transform-origin: top center;
+        }
+
+        /* 플로우 박스 */
+        .flow-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 10px;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .flow-box strong {
+            color: var(--primary);
+        }
+
+        /* 챌린지 카드 */
+        .challenge {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+
+        .challenge.red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        .challenge.yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .challenge.green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .challenge h4 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .challenge p {
+            font-size: 10.5px;
+            margin: 0;
+            line-height: 1.55;
+        }
+
+        /* 로드맵 카드 */
+        .roadmap-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .roadmap-card h4 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .roadmap-card ul {
+            margin: 0;
+            margin-left: 16px;
+            font-size: 10.5px;
+        }
+
+        .phase-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            color: white;
+        }
+
+        /* 감사 카드 */
+        .thank-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            color: white;
+            margin-top: auto;
+        }
+
+        .thank-card h3 {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .thank-card p {
+            color: #bfdbfe;
+            font-size: 11px;
+        }
+
+        /* 기능 그리드 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE 1: Cover -->
+    <div class="page cover">
+        <div class="cover-content">
+            <div>
+                <div style="margin-bottom: 16px;">
+                    <span class="badge" style="background:#10b981">Full Stack</span>
+                    <span class="badge" style="background:#3b99e6">C.R.U.D</span>
+                    <span class="badge" style="background:#8b5cf6">REST API</span>
+                    <span class="badge" style="background:#ef4444">Security</span>
+                    <span class="badge" style="background:#0f172a">Dark Mode</span>
+                </div>
+                <h1>Spring Commerce<br>Admin System</h1>
+                <h2>Spring 기반 상품 관리 백오피스 시스템</h2>
+
+                <div class="info-table">
+                    <div class="info-row">
+                        <div class="info-label">Project</div>
+                        <div class="info-value">Spring Commerce Admin Portfolio</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Period</div>
+                        <div class="info-value">2025.12.30 ~ 2026.01.07 (1 Weeks)</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Tech Stack</div>
+                        <div class="info-value">Java 21, Spring 6, Spring Security 6.5, MyBatis 3, MySQL 8</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Features</div>
+                        <div class="info-value">RBAC Auth, Dynamic Search, REST API, File Upload, Dark Mode</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cover-visual">
+                <div class="icon">🛡️</div>
+                <h3>Spring Security 6.5</h3>
+                <p>Role-Based Access Control</p>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                    <div class="icon" style="font-size: 42px;">⚙️</div>
+                    <p style="margin-top: 6px;">Spring MVC Architecture</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: Architecture -->
+    <div class="page">
+        <div class="page-header">
+            <h1>01. System Architecture</h1>
+            <p>
+                <span>Spring MVC · Layered Architecture · Data Flow Design</span>
+                <span>Architecture Overview</span>
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="col">
+                <h2>Layered Architecture</h2>
+                <div class="card card-accent">
+                    <h4>역할 분리 (SoC)</h4>
+                    <p>Controller - Service - Mapper로 역할을 명확히 나누어 코드를 관리하고 수정하기 쉽게 만들었습니다.</p>
+                </div>
+
+                <h2>Technology Stack</h2>
+                <ul>
+                    <li><strong>Spring Framework 6</strong> - 효율적인 객체 관리를 위한 기반 프레임워크</li>
+                    <li><strong>Spring Security 6.5</strong> - 안전한 로그인 및 권한 관리 시스템</li>
+                    <li><strong>MyBatis 3</strong> - 복잡한 검색 조건을 쉽게 처리하는 SQL 매퍼</li>
+                    <li><strong>HikariCP</strong> - 빠르고 안정적인 데이터베이스 연결 관리</li>
+                    <li><strong>MySQL 8.x</strong> - 트랜잭션 및 외래키 제약 활용</li>
+                </ul>
+
+                <h2>Request Flow</h2>
+                <div class="flow-box">
+                    <strong>Client</strong> → <strong>Security Filter</strong> → <strong>Controller</strong> →
+                    <strong>Service</strong> → <strong>Mapper</strong> → <strong>Database</strong>
+                </div>
+
+                <h2>Project Structure</h2>
+                <pre>src/main/java/org/zerock/
+├── account/        # Security DTOs & Mapper
+├── aop/            # Logging Aspect
+├── controller/     # MVC Controllers
+├── dto/            # Data Transfer Objects
+├── mapper/         # MyBatis Interface
+├── security/       # Custom Security Handlers
+└── service/        # Business Logic</pre>
+            </div>
+
+            <div class="col">
+                <div class="diagram-box" style="padding: 10px 14px; display: flex; align-items: center; justify-content: center; height: 557px; overflow: hidden;">
+                    <!-- 프로젝트 연관 다이어그램 -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; width: 100%; transform: scale(0.9); transform-origin: center center;">
+                        <!-- Client Layer -->
+                        <div style="border: 2px solid #f59e0b; border-radius: 8px; padding: 6px 10px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); text-align: center; width: 85%; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
+                            <div style="font-weight: 700; color: #b45309; margin-bottom: 4px; font-size: 10px;">🖥️ Client</div>
+                            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+                                <div style="background: white; border: 1px solid #fcd34d; padding: 2px 8px; border-radius: 4px; font-weight: 500;">list.jsp</div>
+                                <div style="background: white; border: 1px solid #fcd34d; padding: 3px 10px; border-radius: 4px; font-weight: 500;">register.jsp</div>
+                                <div style="background: white; border: 1px solid #fcd34d; padding: 3px 10px; border-radius: 4px; font-weight: 500;">Fetch API</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 12px; line-height: 1;">▼</div>
+                        <!-- Security Layer -->
+                        <div style="border: 2px solid #ef4444; border-radius: 8px; padding: 8px 12px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center; width: 85%; box-shadow: 0 2px 8px rgba(239,68,68,0.15);">
+                            <div style="font-weight: 700; color: #dc2626; margin-bottom: 5px; font-size: 11px;">🔐 Spring Security</div>
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <div style="background: white; border: 1px solid #fca5a5; padding: 3px 8px; border-radius: 4px; font-weight: 500; font-size: 9px;">CustomUserDetailsService</div>
+                                <div style="background: white; border: 1px solid #fca5a5; padding: 3px 8px; border-radius: 4px; font-weight: 500; font-size: 9px;">LoginSuccessHandler</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 12px; line-height: 1;">▼</div>
+                        <!-- Controller Layer -->
+                        <div style="border: 2px solid #3b82f6; border-radius: 8px; padding: 8px 12px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); text-align: center; width: 85%; box-shadow: 0 2px 8px rgba(59,130,246,0.15);">
+                            <div style="font-weight: 700; color: #1d4ed8; margin-bottom: 5px; font-size: 11px;">🎯 Controller</div>
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <div style="background: white; border: 1px solid #93c5fd; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ProductController</div>
+                                <div style="background: white; border: 1px solid #93c5fd; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ReplyController</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 12px; line-height: 1;">▼</div>
+                        <!-- Service Layer -->
+                        <div style="border: 2px solid #10b981; border-radius: 8px; padding: 8px 12px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); text-align: center; width: 85%; box-shadow: 0 2px 8px rgba(16,185,129,0.15);">
+                            <div style="font-weight: 700; color: #059669; margin-bottom: 5px; font-size: 11px;">⚙️ Service</div>
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <div style="background: white; border: 1px solid #6ee7b7; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ProductService</div>
+                                <div style="background: white; border: 1px solid #6ee7b7; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ReplyService</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 12px; line-height: 1;">▼</div>
+                        <!-- Mapper Layer -->
+                        <div style="border: 2px solid #8b5cf6; border-radius: 8px; padding: 8px 12px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; width: 85%; box-shadow: 0 2px 8px rgba(139,92,246,0.15);">
+                            <div style="font-weight: 700; color: #7c3aed; margin-bottom: 5px; font-size: 11px;">📄 MyBatis Mapper</div>
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <div style="background: white; border: 1px solid #c4b5fd; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ProductMapper.xml</div>
+                                <div style="background: white; border: 1px solid #c4b5fd; padding: 3px 10px; border-radius: 4px; font-weight: 500;">ReplyMapper.xml</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 12px; line-height: 1;">▼</div>
+                        <!-- Database -->
+                        <div style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); border: 2px solid #6b7280; padding: 6px 16px; border-radius: 18px; font-weight: 700; color: white; font-size: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+                            🗄️ MySQL (product, treply, tmember)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>Page 2 / 6</footer>
+    </div>
+
+    <!-- PAGE 3: Product Management -->
+    <div class="page">
+        <div class="page-header">
+            <h1>02. Product Management</h1>
+            <p>
+                <span>Dynamic SQL · File Upload · UUID Naming Strategy</span>
+                <span>Core Features I</span>
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="col">
+                <h2>Dynamic Search Engine</h2>
+                <p>사용자가 입력한 검색 조건(상품명, 카테고리 등)에 따라 SQL이 자동으로 변경되어 실행됩니다.</p>
+
+                <pre>&lt;choose&gt;
+    &lt;when test="type == 'num'"&gt;
+        AND num = #{keyword}
+    &lt;/when&gt;
+    &lt;when test="type == 'name'"&gt;
+        AND name LIKE CONCAT('%', #{keyword}, '%')
+    &lt;/when&gt;
+    &lt;when test="type == 'category'"&gt;
+        AND category LIKE CONCAT('%', #{keyword}, '%')
+    &lt;/when&gt;
+    &lt;when test="type == 'price'"&gt;
+        AND price = #{keyword}
+    &lt;/when&gt;
+&lt;/choose&gt;</pre>
+
+                <div class="card card-accent">
+                    <h4>✅ Dynamic SQL Benefit</h4>
+                    <p>동적 SQL을 사용해 불필요한 조건을 제거함으로써 상황별로 최적화된 쿼리가 실행되도록 구성</p>
+                </div>
+
+                <h2>CRUD Operations</h2>
+                <ul>
+                    <li><strong>Create</strong> - 상품 등록 + 이미지 업로드 + 트랜잭션</li>
+                    <li><strong>Read</strong> - 목록 조회 + 페이징 + 동적 검색</li>
+                    <li><strong>Update</strong> - 상품 수정 + 이미지 교체</li>
+                    <li><strong>Delete</strong> - 상품 삭제 + 연관 파일 삭제</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h2>Secure File Upload</h2>
+                <p>파일 업로드 시 보안과 중복 방지를 위해 UUID 기반 파일명과 이미지 미리보기를 구현했습니다.</p>
+
+                <pre>// ProductController.java - File Upload
+@PostMapping("/register")
+public String register(ProductDTO dto, MultipartFile file) {
+    if (!file.isEmpty()) {
+        // UUID로 고유 파일명 생성
+        String uuid = UUID.randomUUID().toString();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        
+        // 서버에 파일 저장
+        Path savePath = Paths.get(uploadPath, fileName);
+        file.transferTo(savePath.toFile());
+        
+        dto.setImageFile(fileName);
+    }
+    productService.register(dto);
+    return "redirect:/product/list";
+}</pre>
+
+                <h3>Security Features</h3>
+                <ul>
+                    <li><strong>UUID Naming</strong> - 파일명 충돌 방지 및 원본명 노출 차단</li>
+                    <li><strong>MIME Type Check</strong> - 허용된 이미지 파일만 업로드</li>
+                    <li><strong>Image Preview</strong> - 업로드 전 사진 미리보기 기능</li>
+                    <li><strong>Path Traversal</strong> - 상위 경로 접근 차단으로 보안 강화</li>
+                </ul>
+            </div>
+        </div>
+        <footer>Page 3 / 6</footer>
+    </div>
+
+    <!-- PAGE 4: REST API & Reply -->
+    <div class="page">
+        <div class="page-header">
+            <h1>03. REST API & Reply System</h1>
+            <p>
+                <span>@RestController · Fetch API · Asynchronous Communication</span>
+                <span>Core Features II</span>
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="col">
+                <h2>RESTful Reply API</h2>
+                <p>페이지 전체를 새로고침하지 않고도 댓글을 등록하거나 삭제할 수 있어 사용자 경험이 부드럽습니다.</p>
+
+                <pre>@Controller
+@RequestMapping("/reply")
+public class ReplyController {
+    
+    @GetMapping("/list/{num}")
+    @ResponseBody
+    public List&lt;ReplyDTO&gt; list(@PathVariable("num") Integer num) {
+        return replyService.getListByNum(num);
+    }
+    
+    @PostMapping("/remove/{rno}")
+    @ResponseBody
+    public int remove(@PathVariable("rno") Integer rno) {
+        return replyService.remove(rno);
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public int register(@RequestBody ReplyDTO dto) {
+        return replyService.register(dto);
+    }
+}</pre>
+
+                <div class="card card-accent">
+                    <h4>📡 비동기 통신 (AJAX)</h4>
+                    <p>화면 깜빡임 없이 데이터만 주고받아 빠른 속도 제공</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <h2>Client-Side Fetch API</h2>
+                <p>JavaScript Fetch API를 활용한 비동기 통신으로 SPA 스타일의 사용자 경험을 제공합니다.</p>
+
+                <pre>// Fetch API - 댓글 등록
+async function addReply(reply) {
+    const response = await fetch('/reply/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reply)
+    });
+    if (!response.ok) throw new Error('Server Error');
+    return await response.text();
+}
+
+// 댓글 목록 조회
+async function getReplyList(num) {
+    const response = await fetch(`/reply/list/${num}`);
+    return await response.json();
+}
+
+// 댓글 삭제
+async function removeReply(rno) {
+    const response = await fetch(`/reply/remove/${rno}`, {
+        method: 'POST'
+    });
+    return await response.text();
+}</pre>
+
+                <h3>Key Implementation</h3>
+                <ul>
+                    <li><strong>@ResponseBody</strong> - 객체를 JSON으로 자동 변환하여 반환</li>
+                    <li><strong>@RequestBody</strong> - JSON 자동 파싱 (Jackson)</li>
+                    <li><strong>async/await</strong> - 가독성 높은 비동기 코드</li>
+                    <li><strong>Error Handling</strong> - 서버 오류 시 적절한 예외 처리</li>
+                </ul>
+            </div>
+        </div>
+        <footer>Page 4 / 6</footer>
+    </div>
+
+    <!-- PAGE 5: Spring Security -->
+    <div class="page">
+        <div class="page-header">
+            <h1>04. Spring Security Authentication</h1>
+            <p>
+                <span>Role-Based Access Control · Custom UserDetails · Login Handler</span>
+                <span>Security Implementation</span>
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="col">
+                <h2>Role-Based Access Control</h2>
+                <p>Spring Security의 기본 구조를 유지하면서 실무에서 자주 요구되는 역할 기반 화면 분기를 경험하기 위해 Custom Handler 방식을 선택했습니다.</p>
+
+                <pre>// CustomLoginSuccessHandler.java
+@Override
+public void onAuthenticationSuccess(HttpServletRequest request,
+        HttpServletResponse response, Authentication auth) {
+    
+    boolean isAdmin = auth.getAuthorities().stream()
+        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    
+    if (isAdmin) {
+        response.sendRedirect("/product/list");  // 관리자
+    } else {
+        response.sendRedirect("/accessDenied");  // 일반 사용자
+    }
+}</pre>
+
+                <h3>Security Components</h3>
+                <ul>
+                    <li><strong>CustomUserDetailsService</strong> - DB 회원 정보를 UserDetails로 변환</li>
+                    <li><strong>CustomUser</strong> - Security User 확장, MemberDTO 포함</li>
+                    <li><strong>CustomAccessDeniedHandler</strong> - 403 에러 커스텀 처리</li>
+                    <li><strong>CustomLoginSuccessHandler</strong> - 역할별 로그인 후 리다이렉트</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h2>Database Schema</h2>
+                <pre>-- 회원 테이블
+CREATE TABLE tmember (
+    userid VARCHAR(50) PRIMARY KEY,
+    userpw VARCHAR(100) NOT NULL,  -- BCrypt
+    username VARCHAR(100) NOT NULL,
+    enabled CHAR(1) DEFAULT '1'
+);
+
+-- 권한 테이블 (다중 권한 지원)
+CREATE TABLE tmember_auth (
+    userid VARCHAR(50) NOT NULL,
+    auth VARCHAR(50) NOT NULL,  -- ROLE_ADMIN, ROLE_USER
+    FOREIGN KEY (userid) REFERENCES tmember(userid)
+);</pre>
+
+                <h2>Security Features</h2>
+                <div class="feature-grid">
+                    <div class="card">
+                        <h4>🔐 암호화 (Hash)</h4>
+                        <p>비밀번호를 알아볼 수 없게 변환</p>
+                    </div>
+                    <div class="card">
+                        <h4>🛡️ 해킹 방지 (CSRF)</h4>
+                        <p>위조된 요청 차단</p>
+                    </div>
+                    <div class="card">
+                        <h4>🍪 자동 로그인</h4>
+                        <p>로그인 상태 유지 (Remember-Me)</p>
+                    </div>
+                    <div class="card">
+                        <h4>🚫 접근 제어</h4>
+                        <p>권한 없는 페이지 접속 차단</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>Page 5 / 6</footer>
+    </div>
+
+    <!-- PAGE 6: Retrospective -->
+    <div class="page">
+        <div class="page-header">
+            <h1>05. Challenges & Roadmap</h1>
+            <p>
+                <span>Problem Solving · Troubleshooting · Future Plans</span>
+                <span>Project Retrospective</span>
+            </p>
+        </div>
+
+        <div class="grid">
+            <div class="col">
+                <h2>Engineering Challenges</h2>
+
+                <div class="challenge red">
+                    <h4>🔴 성능 저하 이슈 (N+1)</h4>
+                    <p><strong>문제:</strong> 목록을 보여줄 때 불필요한 DB 조회가 반복 발생<br>
+                        <strong>해결:</strong> 다중 조회 구조를 JOIN 기반 단일 쿼리로 변경하여 불필요한 반복 조회를 제거
+                    </p>
+                </div>
+
+                <div class="challenge yellow">
+                    <h4>🟠 파일 덮어쓰기 방지</h4>
+                    <p><strong>문제:</strong> 같은 이름의 파일을 업로드하면 기존 파일이 지워지는 위험<br>
+                        <strong>해결:</strong> 파일명에 랜덤 문자(UUID)를 붙여 유일한 이름으로 저장
+                    </p>
+                </div>
+
+                <div class="challenge green">
+                    <h4>🟢 Security Context Issue</h4>
+                    <p><strong>문제:</strong> MvcRequestMatcher의 ApplicationContext 분리 에러<br>
+                        <strong>해결:</strong> request-matcher="ant" 설정으로 AntPathMatcher 사용
+                    </p>
+                </div>
+
+                <h2>Key Learnings</h2>
+                <ul>
+                    <li><strong>계층 분리</strong> - Controller/Service/Mapper 책임 명확화</li>
+                    <li><strong>보안 설계</strong> - 인증/인가 분리 및 역할 기반 접근 제어</li>
+                    <li><strong>트러블슈팅</strong> - 에러 로그 분석 및 단계적 디버깅</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h2>Future Roadmap</h2>
+
+                <div class="roadmap-card">
+                    <h4><span class="phase-badge" style="background:#10b981">Phase 1</span> Scale-Out</h4>
+                    <ul>
+                        <li><strong>Redis Session</strong> - 다중 서버 세션 공유</li>
+                        <li><strong>Docker & K8s</strong> - 컨테이너 오케스트레이션</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-card">
+                    <h4><span class="phase-badge" style="background:#8b5cf6">Phase 2</span> Cloud Native</h4>
+                    <ul>
+                        <li><strong>AWS S3</strong> - 클라우드 파일 스토리지</li>
+                        <li><strong>OAuth2</strong> - 소셜 로그인 (Google, Kakao)</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-card">
+                    <h4><span class="phase-badge" style="background:#0891b2">Phase 3</span> UI/UX</h4>
+                    <ul>
+                        <li><strong>Responsive</strong> - 모바일 대응 레이아웃</li>
+                    </ul>
+                </div>
+
+                <div class="thank-card">
+                    <h3>Thank You for Reading</h3>
+                    <p>Production-Ready Enterprise Solution</p>
+                </div>
+            </div>
+        </div>
+        <footer>Page 6 / 6</footer>
+    </div>
+
+    <!-- Mermaid -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+        });
+    </script>
+</body>
+
+</html>
